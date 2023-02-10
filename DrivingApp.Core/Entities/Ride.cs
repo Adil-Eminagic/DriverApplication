@@ -15,7 +15,7 @@ namespace DrivingApp.Core
         public User Driver { get; set; } = null!;
 
         public ICollection<MileStone> MileStones { get; set; } = null!;
-        public ICollection<Condition> Conditions { get; set; } = null!;
+        public ICollection<RideCondition> Conditions { get; set; } = null!;
         public ICollection<UserRide> Passengers { get; set; } = null!;
     }
 }

@@ -6,7 +6,7 @@ namespace DrivingApp.Core
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
 
-        ICollection<Ride> Rides = null!;
+        public ICollection<RideCondition> Rides { get; set; } = null!;
 
     }
 }
