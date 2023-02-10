@@ -5,43 +5,54 @@ using Microsoft.EntityFrameworkCore;
 namespace DrivingApp.Infrastructure
 {
     public abstract class BaseRepository<TEntity, TPrimaryKey> : IBaseRepository<TEntity, TPrimaryKey> where TEntity : BaseEntity
-    {
-       
-        // you need efcore nutget package to have dbContext class, and confgure dbsets in separate class
+    { // you need efcore nutget package to have dbContext class, and confgure dbsets in separate class
 
-        public Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+        protected readonly DatabaseContext DatabaseContext; //convention to private var with _databaseContext
+        protected readonly DbSet<TEntity> DbSet;
+
+        protected BaseRepository(DatabaseContext databaseContext)
         {
-            throw new NotImplementedException();
+            DatabaseContext = databaseContext;
+            DbSet = DatabaseContext.Set<TEntity>();
         }
 
-        public Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+        public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            await DbSet.AddAsync(entity, cancellationToken);
         }
 
-        public Task<TEntity?> GetByIdAsync(TPrimaryKey id, CancellationToken cancellationToken = default)
+        public async Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            await DbSet.AddRangeAsync(entities, cancellationToken);
+        }
+
+        public async Task<TEntity?> GetByIdAsync(TPrimaryKey id, CancellationToken cancellationToken = default)
+        {
+            return await DbSet.FindAsync(id, cancellationToken);
         }
 
         public void Remove(TEntity entity)
         {
-            throw new NotImplementedException();
+             DbSet.Remove(entity);
         }
 
-        public Task RemoveByIdAsync(TPrimaryKey id, bool isSoft = true, CancellationToken cancellationToken = default)
+        public async Task RemoveByIdAsync(TPrimaryKey id, bool isSoft = true, CancellationToken cancellationToken = default)
         {
+
             throw new NotImplementedException();
+            //todo: 
+
+            //await DbSet.Where(e => e.Id.Equals(id)).ExecuteDeleteAsync(cancellationToken);
         }
 
         public void Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            DbSet.Update(entity);
         }
 
         public void UpdateRange(IEnumerable<TEntity> entities)
         {
-            throw new NotImplementedException();
+            DbSet.UpdateRange(entities);
         }
     }
 }
