@@ -39,10 +39,16 @@ namespace DrivingApp.Infrastructure
         public async Task RemoveByIdAsync(TPrimaryKey id, bool isSoft = true, CancellationToken cancellationToken = default)
         {
 
-            throw new NotImplementedException();
-            //todo: 
+            if (isSoft)
+            {
+                await DbSet.Where(e=> e.Id.Equals(id)).ExecuteUpdateAsync( p=>p.
+                    SetProperty(e => e.IsDeleted, true)
+                    .SetProperty(e => e.ModifiedAt, DateTime.Now), cancellationToken);
+            }
+            else
+                await DbSet.Where(e => e.Id.Equals(id)).ExecuteDeleteAsync(cancellationToken);
 
-            //await DbSet.Where(e => e.Id.Equals(id)).ExecuteDeleteAsync(cancellationToken);
+
         }
 
         public void Update(TEntity entity)

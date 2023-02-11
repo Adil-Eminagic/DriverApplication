@@ -27,6 +27,9 @@ namespace DrivingApp.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            SeedData(modelBuilder);
+            ApplyConfigurations(modelBuilder);
         }
     }
 }
